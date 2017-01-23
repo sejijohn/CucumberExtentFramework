@@ -26,6 +26,17 @@ public enum PageTitleEnum implements BaseEnum<PageTitlePojo>{
 			return title;
 			
 		}
-	};
+	},
+	 
+	 DEMOTITLE{
+
+		@Override
+		public PageTitlePojo getInfo() {
+			// TODO Auto-generated method stub
+			PageTitlePojo title = new PageTitlePojo();
+			title.setTitle("Welcome");
+			return title;
+		}
+		};
 
 }

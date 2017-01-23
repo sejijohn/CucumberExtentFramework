@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(plugin = {"pretty", "html:target/cucumber", "json:target/cucumber.json"},
 features = "src/test/resources",
 glue = "com.selenium.steps",
-tags = {"@TC1, @TC2"})
+tags = {"@TC3"})
 
 public class RunnerTest {
 

@@ -23,12 +23,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.sikuli.script.*;
+
 import com.google.common.base.Predicate;
 import com.relevantcodes.extentreports.LogStatus;
 import com.selenium.common.Configuration;
 import com.selenium.common.Constants;
 import com.selenium.common.Reports;
 import com.selenium.maps.DataMaps;
+import com.selenium.page.enums.ImagePathEnum;
 import com.selenium.page.enums.PageTitleEnum;
 
 public class PageBase extends WebDriverBase {
@@ -513,7 +516,7 @@ public class PageBase extends WebDriverBase {
 			 * By.linkText("Producer Toolbox Login Page")).click(); }
 			 */
 			break;
-		case "ust-global":
+		case "AUTODEMO":
 			navigateToURL(DataMaps.dataMap.get("QA SIT2"));
 			break;
 		case "google":
@@ -575,6 +578,46 @@ public class PageBase extends WebDriverBase {
 	}
 
 	/* Methods based on user actions */
+	
+	
+	// Common method for verifying images in the page using sikuli api
+	public static boolean verifyImage(String imageInfo) throws InterruptedException {
+		//((JavascriptExecutor)getDriverInstance()).executeScript("window.focus();");
+		String currentWindowHandle = getDriverInstance().getWindowHandle();
+		/*((JavascriptExecutor) getDriverInstance()).executeScript("alert('Test')");
+		getDriverInstance().switchTo().alert().accept();*/
+		getDriverInstance().switchTo().window(currentWindowHandle);
+
+		try {
+			Screen screen = new Screen();
+			Pattern pattern = new Pattern(ImagePathEnum.valueOf(imageInfo.trim().toUpperCase()).getInfo().getPath());
+			System.out.println(ImagePath.getBundlePath());
+			screen.wait(pattern, 30);
+			Match match = screen.exists(pattern);
+			if (match != null) {
+				System.out.println("LOGO VERIFIED");
+				takeScreenShot(imageInfo);
+				report.logStatus(LogStatus.PASS, "Logo verified",
+						imageInfo + " <span class='label success'>success</span>");
+				return true;
+
+			} else
+				throw new FindFailed("LOGO NOT FOUND");
+		} catch (FindFailed e) {
+			// TODO Auto-generated catch block
+			System.out.println("LOGO NOT VERIFIED");
+			takeScreenShot(imageInfo);
+			report.screenshotLog(LogStatus.FAIL, "Logo Verification falied",
+					Constants.sScreenshotFilepath + imageInfo + ".jpeg");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
+	
+
+	//Common method for verifying Title of the page. 
 
 	public static boolean verifyTitle(String title) {
 
