@@ -3,6 +3,7 @@ package com.selenium.base;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.FileUtils;
@@ -578,15 +579,22 @@ public class PageBase extends WebDriverBase {
 	}
 
 	/* Methods based on user actions */
-	
+	 
 	
 	// Common method for verifying images in the page using sikuli api
+	/**
+	 * 
+	 * Code by Seji John
+	 * 
+	 */
 	public static boolean verifyImage(String imageInfo) throws InterruptedException {
 		//((JavascriptExecutor)getDriverInstance()).executeScript("window.focus();");
-		String currentWindowHandle = getDriverInstance().getWindowHandle();
+		//String currentWindowHandle = getDriverInstance().getWindowHandle();
+		Set<String> currentWindowHandles = getDriverInstance().getWindowHandles();
+		System.out.println("SIZE of windows: "+currentWindowHandles.size());
 		/*((JavascriptExecutor) getDriverInstance()).executeScript("alert('Test')");
 		getDriverInstance().switchTo().alert().accept();*/
-		getDriverInstance().switchTo().window(currentWindowHandle);
+		//getDriverInstance().switchTo().window(currentWindowHandle);
 
 		try {
 			Screen screen = new Screen();
